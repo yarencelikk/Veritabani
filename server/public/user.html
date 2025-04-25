@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kullanıcı Profili</title>
+    <link rel="stylesheet" href="user.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>Kullanıcı Profili</h1>
+        <div class="nav-icons">
+            <a href="index.html" aria-label="Anasayfa"><i class="fas fa-home"></i></a>
+            <a href="#" aria-label="Hakkında"><i class="fas fa-info-circle"></i></a>
+            <a href="#" aria-label="İletişim"><i class="fas fa-envelope"></i></a>
+        </div>
+    </header>
+    <main>
+        <h2>Hoş Geldiniz, [Kullanıcı Adı]</h2>
+        <section id="profile-actions">
+            <h2>Profil İşlemleri</h2>
+            <button onclick="changePassword()">Şifre Değiştir</button>
+        </section>
+        <section id="registered-events">
+            <h2>Kayıtlı Etkinlikleriniz</h2>
+        </section>
+        <section id="rented-equipment">
+            <h2>Kiraladığınız Ekipmanlar</h2>
+        </section>
+        <button id="logout-btn">Çıkış Yap</button>
+    </main>
+    <script src="user.js"></script>
+</body>
+</html>

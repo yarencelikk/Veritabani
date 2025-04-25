@@ -1,0 +1,156 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap");
+
+/* Genel Ayarlar */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Josefin Sans", sans-serif;
+  background: linear-gradient(135deg, rgba(224, 247, 250, 0.8), rgba(255, 255, 255, 0.8)), ;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+
+/* Info Box Tasarımı */
+.info-box {
+  background: rgba(255, 255, 255, 0.8); /* Şeffaf arka plan */
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Gölge efekti */
+  padding: 1.5rem 2rem;
+  margin-top: 1.5rem;
+  width: 90%;
+  max-width: 800px;
+  text-align: center;
+}
+
+.info-box h1 {
+  font-size: 2.2rem;
+  color: #00796b;
+  margin-bottom: 1rem;
+}
+
+.info-box .nav-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.info-box .nav-icons a {
+  font-size: 1.5rem;
+  color: #004d40;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.info-box .nav-icons a:hover {
+  color: #00796b;
+  transform: scale(1.1); /* Hafif büyüme efekti */
+}
+
+/* Alt Çizgiyi Kaldır */
+h1, h2, h3, p, a, button {
+  text-decoration: none;
+}
+
+/* Ana Sayfa İçerik */
+main {
+  flex: 1;
+  padding: 2rem;
+  width: 100%;
+  max-width: 800px;
+}
+
+#event-list {
+  margin-top: 2rem;
+}
+
+#event-list h2 {
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  color: #00796b;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Etkinlik Kartları */
+.event-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-card h3 {
+  color: #004d40;
+  margin-bottom: 0.5rem;
+}
+
+.event-card p {
+  margin: 0.5rem 0;
+  color: #333;
+}
+
+.event-card button {
+  background-color: #00796b;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-card button:hover {
+  background-color: #004d40;
+  transform: translateY(-2px);
+  box-shadow: 0px 4px 10px rgba(0, 77, 64, 0.3);
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer */
+footer {
+  background: rgba(255, 255, 255, 0.8);
+  color: #00796b;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-top: 1px solid rgba(0, 121, 107, 0.3);
+}
+
+footer .social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0.5rem 0;
+}
+
+footer .social-icons a {
+  font-size: 1.5rem;
+  color: #004d40;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+footer .social-icons a:hover {
+  color: #00796b;
+  transform: scale(1.2);
+}

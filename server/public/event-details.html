@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etkinlik Detayları</title>
+    <link rel="stylesheet" href="index2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <h1>Etkinlik Detayları</h1>
+        <div class="nav-icons">
+            <a href="index.html" aria-label="Anasayfa"><i class="fas fa-home"></i></a>
+            <a href="#" aria-label="Hakkında"><i class="fas fa-info-circle"></i></a>
+            <a href="#" aria-label="İletişim"><i class="fas fa-envelope"></i></a>
+            <a href="user.html" aria-label="Profil"><i class="fas fa-user"></i></a>
+        </div>
+    </header>
+
+    <main>
+        <section id="event-details">
+            <img src="" alt="Etkinlik Görseli" id="event-image" style="width: 100%; height: auto; display: none;">
+            <h2>Etkinlik Adı</h2>
+            <p>Tarih:</p>
+            <p>Yer:</p>
+            <p>Kapasite:</p>
+            <p>Fiyat:</p>
+            <button class="btn" id="reserve-button">Rezervasyon Yap</button>
+        </section>
+        <section id="equipment">
+            <h2>Ekipman Kiralama</h2>
+            <div id="equipment-list">
+                <!-- Ekipmanlar Dinamik Olarak Buraya Yüklenecek -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="social-icons">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p>Tüm hakları saklıdır. © 2024</p>
+    </footer>
+
+    <script>
+        // Etkinlik ID'sini URL'den almak için bir yardımcı fonksiyon
+        function getEventId() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get("eventId");
+        }
+
+        // Etkinlik detaylarını yükler
+        function loadEventDetails() {
+            const eventId = getEventId();
+            const eventImages = {
+                "1": "/images/etkinlik1.png",
+                "2": "/images/etkinlik2.jpg",
+                "3": "/images/etkinlik3.jpg",
+                "4": "/images/etkinlik4.jpg",
+                "5": "/images/etkinlik5.jpg",
+                "6": "/images/etkinlik6.jpg",
+            };
+            // Görsel URL'sini ayarla
+            const imageUrl = eventImages[eventId];
+            if (imageUrl) {
+                const eventImage = document.getElementById("event-image");
+                eventImage.src = imageUrl;
+                eventImage.alt = `Etkinlik ${eventId} Görseli`;
+                eventImage.style.display = "block"; // Görünür yap
+            }
+            fetch(`http://localhost:5000/events/${eventId}`)
+                .then(response => response.ok ? response.json() : Promise.reject("Etkinlik yüklenemedi"))
+                .then(event => {
+                    const formattedDate = new Date(event.event_date).toLocaleDateString("tr-TR", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric"
+                    });
+                    document.querySelector("#event-details h2").textContent = event.event_name;
+                    document.querySelector("#event-details p:nth-of-type(1)").textContent = `Tarih: ${formattedDate}`;
+                    document.querySelector("#event-details p:nth-of-type(2)").textContent = `Yer: ${event.event_location}`;
+                    document.querySelector("#event-details p:nth-of-type(3)").textContent = `Kapasite: ${event.capacity}`;
+                    document.querySelector("#event-details p:nth-of-type(4)").textContent = `Fiyat: ${event.price} TL`; // Fiyat bilgisini ekliyoruz
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("Etkinlik bilgileri yüklenemedi.");
+                });
+        }
+
+
+        // Ekipmanları yükler
+        function loadEquipment(eventId) {
+            fetch(`http://localhost:5000/events/${eventId}/equipment`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Ekipman yüklenemedi");
+                    }
+                    return response.json();
+                })
+                .then(equipment => {
+                    const equipmentList = document.getElementById("equipment-list");
+                    equipmentList.innerHTML = ""; // Mevcut içeriği temizle
+
+                    equipment.forEach(item => {
+                        const equipmentItem = document.createElement("div");
+                        equipmentItem.className = "equipment-item";
+                        equipmentItem.innerHTML = `
+                            <p>${item.equipment_name}</p>
+                            <p>Mevcut Stok: ${item.stock}</p>
+                            <button class="btn" onclick="rentEquipment(${item.id})">Kirala</button>
+                        `;
+                        equipmentList.appendChild(equipmentItem);
+                    });
+                })
+                .catch(error => {
+                    console.error("Ekipmanlar yüklenirken bir hata oluştu:", error);
+                    alert("Ekipmanlar yüklenemedi.");
+                });
+        }
+
+
+        // Rezervasyon yapar
+        function reserve() {
+            const userId = localStorage.getItem("userId");
+            const eventId = getEventId();
+
+            if (!userId) {
+                alert("Lütfen giriş yapın.");
+                return;
+            }
+
+            fetch("http://localhost:5000/reserve", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ userId, eventId })
+            })
+                .then(response => response.ok ? response.json() : Promise.reject("Rezervasyon yapılamadı"))
+                .then(data => {
+                    alert(data.message || "Rezervasyon başarıyla tamamlandı!");
+                    loadEventDetails(); // Kapasiteyi güncellemek için detayları yeniden yükle
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("Rezervasyon işlemi başarısız oldu.");
+                });
+        }
+
+        // Ekipman kiralama fonksiyonu
+        function rentEquipment(equipmentId) {
+            const userId = localStorage.getItem("userId");
+            if (!userId) {
+                alert("Lütfen giriş yapın.");
+                return;
+            }
+
+            fetch("http://localhost:5000/rentals", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ userId, equipmentId })
+            })
+                .then(response => response.ok ? response.json() : Promise.reject("Kiralama işlemi sırasında bir hata oluştu."))
+                .then(data => {
+                    alert(data.message || "Ekipman başarıyla kiralandı!");
+                    const eventId = getEventId();
+                    loadEquipment(eventId); // Stok bilgisini güncelle
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("Kiralama işlemi başarısız oldu.");
+                });
+        }
+
+        // Load equipment and bind click events
+        function loadEquipment(eventId) {
+            fetch(`http://localhost:5000/events/${eventId}/equipment`)
+                .then(response => response.ok ? response.json() : Promise.reject("Ekipmanlar yüklenemedi"))
+                .then(equipment => {
+                    const equipmentList = document.getElementById("equipment-list");
+                    equipmentList.innerHTML = ""; // Mevcut ekipmanları temizle
+                    equipment.forEach(item => {
+                        const equipmentItem = document.createElement("div");
+                        equipmentItem.className = "equipment-item";
+                        equipmentItem.innerHTML = `
+                    <p>${item.equipment_name}</p>
+                    <p>Mevcut Stok: ${item.stock}</p>
+                   <button class="kirala-btn" onclick="rentEquipment(${item.id})">Kirala</button>
+                `;
+                        equipmentList.appendChild(equipmentItem);
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("Ekipmanlar yüklenemedi.");
+                });
+        }
+        // Sayfa yüklendiğinde etkinlik detaylarını ve ekipmanları yükler
+        window.onload = () => {
+            const eventId = getEventId();
+            if (eventId) {
+                loadEventDetails();
+                loadEquipment(eventId);
+            } else {
+                alert("Etkinlik bilgileri yüklenemedi.");
+            }
+        };
+
+        // Rezervasyon butonuna tıklama olayını bağlar
+        document.getElementById("reserve-button").onclick = reserve;
+    </script>
+</body>
+
+</html>

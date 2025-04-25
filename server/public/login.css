@@ -1,0 +1,112 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap");
+
+/* Genel Ayarlar */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body,
+button,
+input {
+  font-family: "Josefin Sans", sans-serif;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #e0f7fa, #ffffff); /* Kayıt Ol ile aynı renkler */
+  color: #333;
+}
+
+/* Login Bölümü */
+#login-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+  background-color: #ffffff;
+  padding: 2.5rem 3rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 400px;
+}
+
+/* Başlık */
+h1 {
+  font-size: 2rem;
+  font-weight: 500;
+  color: #00796b; /* Kayıt Ol ile aynı yeşil ton */
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Form Tasarımı */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* Input Alanları */
+input {
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border: 1px solid #b2dfdb;
+  border-radius: 8px;
+  color: #00796b;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus {
+  border: 1px solid #004d40;
+  outline: none;
+  box-shadow: 0 0 8px rgba(0, 77, 64, 0.3);
+}
+
+/* Buton Tasarımı */
+button {
+  background-color: #00796b;
+  color: white;
+  padding: 1rem;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 1rem;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  background-color: #004d40;
+  transform: translateY(-2px);
+  box-shadow: 0px 4px 10px rgba(0, 77, 64, 0.3);
+}
+
+/* Alt Yazı ve Bağlantı */
+span {
+  color: #00796b;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+span a {
+  color: #004d40;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+span a:hover {
+  color: #00796b;
+}

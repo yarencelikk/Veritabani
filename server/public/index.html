@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamp ve Doğa Etkinlikleri</title>
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div class="info-box">
+        <h1>Kamp ve Doğa Etkinlikleri</h1>
+        <div class="nav-icons">
+            <a href="#" aria-label="Hakkında"><i class="fas fa-info-circle"></i></a>
+            <a href="#" aria-label="İletişim"><i class="fas fa-envelope"></i></a>
+            <a href="login.html" aria-label="Giriş Yap"><i class="fas fa-sign-in-alt"></i></a>
+            <a href="user.html" aria-label="Profil"><i class="fas fa-user"></i></a>
+        </div>
+    </div>
+    <main>
+        <section id="event-list">
+            <!-- Etkinlikler Dinamik Olarak Buraya Yüklenecek -->
+        </section>
+    </main>
+    <footer>
+        <div class="social-icons">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p>Tüm hakları saklıdır. © 2024</p>
+    </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch("http://localhost:5000/events")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Etkinlikler yüklenirken bir hata oluştu.");
+                    }
+                    return response.json();
+                })
+                .then(events => {
+                    const eventList = document.getElementById("event-list");
+                    eventList.innerHTML = ""; // Eski içeriği temizle
+
+                    events.forEach(event => {
+                        // ISO tarih formatını kullanıcı dostu formata dönüştür
+                        const eventDate = new Date(event.event_date);
+                        const formattedDate = eventDate.toLocaleDateString("tr-TR", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric"
+                        });
+
+                        const eventCard = document.createElement("div");
+                        eventCard.className = "event-card";
+                        eventCard.innerHTML = `
+                            <h3>${event.event_name}</h3>
+                            <p>Tarih: ${formattedDate}</p>
+                            <p>Yer: ${event.event_location}</p>
+                            <p>Fiyat: ${event.price} TL</p> <!-- Fiyat bilgisi eklendi -->
+                            <button onclick="showDetails(${event.id})">Detayları Gör</button>
+                        `;
+                        eventList.appendChild(eventCard);
+                    });
+                })
+                .catch(error => {
+                    console.error("Etkinlikler yüklenirken bir hata oluştu:", error);
+                    alert("Etkinlikler yüklenemedi.");
+                });
+        });
+
+
+        function showDetails(eventId) {
+            window.location.href = `event-details.html?eventId=${eventId}`;
+        }
+    </script>
+</body>
+
+</html>
